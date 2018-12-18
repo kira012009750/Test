@@ -1,22 +1,24 @@
 var express = require('express');
 var router = express.Router();
+var auth = require("../middleware/auth");
+var news = require("../model/news/backend-news");
 
-/* GET home page.
 
-709306ff869641d2b43ab576041a0baa
-
-*/
 var controller = {
   index:function(req,res,next){
     var context = {
       name:req.session.name,
       title:"Home"
     }
-    console.log("USER ",req.session.name)
-    res.render('home', context);
+    news.list(function(response){
+      context.news = response.news;
+      context.newsJS = JSON.stringify(response.news);
+      res.render('home', context);
+    })
+    
   },
 }
 
-router.get("/", controller.index); 
+router.get("/",auth.isAuth, controller.index); 
 
 module.exports = router;

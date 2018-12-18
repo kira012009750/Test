@@ -9,10 +9,13 @@ var router = express.Router();
 var controller = {
   index:function(req,res,next){
     var context = {
-      user:req.session.user,
+      img:req.session.img,
+      name:req.session.name,
+      email:req.session.email,
+      id:req.session.id,
       title:"Express"
     }
-    res.render('index', context);
+    res.render('profile', context);
   },
 }
 

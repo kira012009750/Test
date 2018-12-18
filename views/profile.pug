@@ -6,28 +6,15 @@ block content
   br
   .row
     .container
-      .col.s12
-        .row
-          .input-field.col.s12
-            i.material-icons.prefix textsms
-            input#autocomplete-input.autocomplete(type='text')
-            label(for='autocomplete-input') Search News
-
-  .row.center
-        each item in news.articles
-          .col.s12.m3
-            .card
-              .card-image
-                -var url = item.urlToImage
-                img(src=url, style="height: 165px;")
-                span.card-title= item.source.name.toUpperCase()
-                a.btn-floating.small.halfway-fab.waves-effect.waves-light.red
-                  i.material-icons favorite
-              .card-content(style="height: 100px;")
-                p= item.title
-              .card-action
-                -var urlNew = item.url
-                a(href=urlNew) Go to the article
+      .col.s12.m4.offset-m4
+        .card
+          .card-image
+            -var url = img
+            img(src=url, style="height: 365px;")
+            span.card-title= name.toUpperCase()
+          .card-content(style="height: 100px;")
+            p EMAIL: #{email}
+            p ID-USER: #{id}
 
 
 block script

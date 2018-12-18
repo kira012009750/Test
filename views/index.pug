@@ -4,7 +4,7 @@ block content
   .row.center
     .col.s12.m4.offset-m4
       h1= title
-      a.btn(onclick="googleAuth()") Login / Sing in with Google
+      a.btn.blue(onclick="googleAuth()") Login / Sing in with Google
 block script
   script.
     var errores = $("#error").data( "json" );
@@ -29,12 +29,12 @@ block script
     //- ---------------------- FIREBASE ----------------------
     //- ---------------------- FIREBASE ----------------------
     var config = {
-      apiKey: "AIzaSyD02_KFAgFxo2LKH9eALv3x1cJUTbPs_tI",
+      apiKey: "#{key}",
       authDomain: "brounietest.firebaseapp.com",
       databaseURL: "https://brounietest.firebaseio.com",
       projectId: "brounietest",
       storageBucket: "brounietest.appspot.com",
-      messagingSenderId: "926143549779"
+      messagingSenderId: "#{id}"
     };
     firebase.initializeApp(config);
     //- ---------------------- FIREBASE ----------------------

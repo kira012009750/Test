@@ -10,6 +10,7 @@ var login = require('./routes/login');
 var singIn = require('./routes/singIn');
 var home = require('./routes/home');
 var profile = require('./routes/profile');
+var logout = require('./routes/logout');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use('/', login);
 app.use('/sign_in', singIn);
 app.use('/home', home);
 app.use('/profile', profile);
+app.use('/logout', logout);
 
 
 // catch 404 and forward to error handler

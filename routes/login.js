@@ -9,7 +9,9 @@ var router = express.Router();
 var controller = {
   index:function(req,res,next){
     var context = {
-      title:"Brounie"
+      title:"Brounie",
+      key:"AIzaSyD02_KFAgFxo2LKH9eALv3x1cJUTbPs_tI",
+      id:"926143549779",
     }
     res.render('index', context);
   },
