@@ -1,5 +1,85 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .row.center
+    .col.s12.m4.offset-m4
+      h1= title
+      a.btn(onclick="googleAuth()") Login / Sing in with Google
+block script
+  script.
+    var errores = $("#error").data( "json" );
+    var msg = "";
+    if(errores != null){
+      if(errores == 101)
+        msg = "Usuario y/o constraseña incorrectos."
+      else if(errores == 102)
+        msg = "Cuenta desactivada."
+      else if(errores == 103)
+        msg = "Cuenta sin autorización."
+      M.toast({
+        html: msg,
+        classes: 'rounded',
+        displayLength: '5000',
+        inDuration: '1000',
+        outDuration: '1000'
+      });
+    }
+    errores = null;
+
+    //- ---------------------- FIREBASE ----------------------
+    //- ---------------------- FIREBASE ----------------------
+    var config = {
+      apiKey: "AIzaSyD02_KFAgFxo2LKH9eALv3x1cJUTbPs_tI",
+      authDomain: "brounietest.firebaseapp.com",
+      databaseURL: "https://brounietest.firebaseio.com",
+      projectId: "brounietest",
+      storageBucket: "brounietest.appspot.com",
+      messagingSenderId: "926143549779"
+    };
+    firebase.initializeApp(config);
+    //- ---------------------- FIREBASE ----------------------
+    //- ---------------------- FIREBASE ----------------------
+
+    function googleAuth(){
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(function(result) {
+          var token = result.credential.accessToken;
+          var user = result.user;
+          var additionalUserInfo = result.additionalUserInfo.profile;
+          M.toast({html: 'Welcome', classes: 'rounded'});
+          console.log("INFO_USER",additionalUserInfo);
+          saveUser(additionalUserInfo);
+
+      }).catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          var email = error.email;
+          var credential = error.credential;
+          M.toast({html: 'Ups something went wrong try it latter', classes: 'rounded'});
+          console.log(errorCode);
+          console.log(errorMessage);
+      });
+    }
+
+    function saveUser(user){
+      var form = {
+        id:user.id,
+        email:user.email,
+        name:user.name,
+        img:user.picture,
+      }
+      $.ajax({
+        method:"POST",
+        url:"/sign_in",
+        data:form,
+        success:function(response){
+          console.log("SERVER RESPONSE",response)
+          location.href="/home";
+        },
+        error:function(error){
+          console.log(error.responseText)
+          M.toast({html: 'Ups, there was a mistake we are working to fix it', classes: 'rounded'});
+        }
+      })
+    }
+

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  include nav.pug
+  .row.center
+    .col.s12.m4.offset-m4
+      h4 Welcome #{name}
+block script
+  script.
+    $(document).ready(function(){
+      $('.sidenav').sidenav();
+    });
+    

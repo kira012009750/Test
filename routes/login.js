@@ -9,13 +9,12 @@ var router = express.Router();
 var controller = {
   index:function(req,res,next){
     var context = {
-      user:req.session.user,
-      title:"Express"
+      title:"Brounie"
     }
     res.render('index', context);
   },
 }
 
-router.get("/",auth.isAuth, controller.index); 
+router.get("/", controller.index); 
 
 module.exports = router;
