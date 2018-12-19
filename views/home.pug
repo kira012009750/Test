@@ -4,64 +4,145 @@ block content
   include nav.pug
   br
   br
-  .row
-    .container
-      .col.s12
-        .row
-          .input-field.col.s12
-            i.material-icons.prefix textsms
-            input#autocomplete-input.autocomplete(type='text')
-            label(for='autocomplete-input') Search News
+  #app
 
-  .row.center
-        each item in news.articles
-          .col.s12.m3
-            .card
-              .card-image
-                -var url = item.urlToImage
-                img(src=url, style="height: 165px;")
-                span.card-title= item.source.name.toUpperCase()
-                a.btn-floating.small.halfway-fab.waves-effect.waves-light.red
-                  i.material-icons favorite
-              .card-content(style="height: 100px;")
-                p= item.title
-              .card-action
-                -var urlNew = item.url
-                a(href=urlNew) Go to the article
+    .row.center
+      .container
+        nav.white
+          .nav-wrapper
+            .input-field
+              input#search(type='search', placeholder="Search" ,v-on:change="loadKeyWordSearch()")
+              label.label-icon(for='search')
+                i.material-icons search
+              i.material-icons close
+
+    .row.center
+      .container
+        .col.s12.m3.offset-m2
+          a.btn.blue(v-on:click="loadAll()") WORLD TOPS NEWS
+        .col.s12.m3
+          a.btn.blue(v-on:click="loadAllUsa()") USA TOP NEWS
+        .col.s12.m3
+          a.btn.blue.modal-trigger(href="#modal1") BY SOURCE
+
+    .row.center
+        .col.s12.m3(v-for="item in news")
+          .card
+            .card-image
+              img(:src="item.urlToImage" style="height: 165px;")
+              span.card-title {{item.source.name}}
+              a.btn-floating.small.halfway-fab.waves-effect.waves-light.red(v-on:click="addFavoriteNews(item)")
+                i.material-icons favorite
+            .card-content(style="height: 100px;")
+              p {{item.title}}
+            .card-action
+              a(:href="item.url") Go to the article
+
+    #modal1.modal.bottom-sheet
+      .modal-content
+       h5.header Sources available
+        ul.collection
+          li.collection-item.avatar(v-for="item in sources").row
+            .col.s1.m1
+              a.btn-floating.btn-large.waves-effect.waves-light.yellow(v-on:click="addFavoriteSource(item)")
+                i.material-icons star
+            .col.s1.m1
+              a.btn-floating.btn-large.waves-effect.waves-light.blue(v-on:click="loadBySource(item)")
+                i.material-icons search
+            .col.s10.m10
+              h5.title(style="font-weight: 800;margin-bottom: 0px;margin-top: 10px;") {{item.name}}
+              label(style="font-weight: 200;margin-bottom: 0px;margin-top: 0px;") {{item.country | upperCase}} | 
+              label(style="font-weight: 300;margin-bottom: 0px;margin-top: 0px;") {{item.url}}
+          
 
 
 block script
   script.
     $(document).ready(function(){
       $('.sidenav').sidenav();
-      loadAutoComplete();
-      
+      $('.modal').modal();
+      app.loadAll();
+      app.loadCategory();
     });
-
-
-
-    function loadAutoComplete(){
-      var news = !{newsJS};
-      var newsJS = [];
-      console.log(news)
-      news.articles.forEach(function(item){
-         // newsJS[''+item.source.name+''] = item.urlToImage;
-         newsJS.push({
-           text:item.source.name,
-           img:item.urlToImage,
-           url:item.url
-         });
-      });
-      console.log("ITEM",newsJS)
-      $('input.autocomplete').autocomplete({
-         data: newsJS,
-      });
-    }
-
-    $("#autocomplete-input").change(function(){
-        var url = $("#autocomplete-input").data("url");
-        console.log("URL",url)
-        location.href=url;
+    var app = new Vue({
+      el: '#app',
+      data: {
+        news:{},
+        sources:{},
+      },
+      filters:{
+        upperCase:function(value){
+          if(value != undefined){
+            return value.toUpperCase();
+          }
+        }
+      },
+      methods:{
+        loadAll:function(){ // THIS METHOD LOAD ALL WORD NEWS
+            M.toast({html: 'Wait a minute, all world news are loading', classes: 'rounded'})
+            axios.get('/home/all/')
+              .then(function(response){
+                console.log("NEWS ALL",response.data.news.articles);
+                app.news = response.data.news.articles;
+              })
+              .catch(function(error){
+                console.log("ERROR",error)
+            });
+        },
+        loadAllUsa:function(){ // THIS METHOD LOAD ALL WORD NEWS
+            M.toast({html: 'Wait a minute, all U.S.A. news are loading', classes: 'rounded'})
+            axios.get('/home/allUsa/')
+              .then(function(response){
+                console.log("NEWS ALL",response.data.news.articles);
+                app.news = response.data.news.articles;
+              })
+              .catch(function(error){
+                console.log("ERROR",error)
+            });
+        },
+        loadCategory:function(){ // THIS METHOD LOAD ALL CATEGORIES TO USE IT ON AUTOCOMPLETE FIELD
+            axios.get('/home/categories/')
+              .then(function(response){
+                console.log("ALL SOURCES",response.data.sources);
+                app.sources = response.data.sources.sources;
+              })
+              .catch(function(error){
+                console.log("ERROR",error)
+            });
+        },
+        loadBySource:function(item){ // THIS METHOD LOAD ALL NEWS BY AN SPECIFIC SOURCE
+          M.toast({html: 'Wait a minute', classes: 'rounded'})
+          $("#modal1").modal("close")
+          var source = item.id;
+           axios.post('/home/source/',{source:source})
+              .then(function(response){
+                console.log("ALL NEWS BY SOURCE",response.data.news.articles);
+                app.news = response.data.news.articles;
+              })
+              .catch(function(error){
+                console.log("ERROR",error)
+            });
+        },
+        loadKeyWordSearch:function(){
+          M.toast({html: 'Wait a minute', classes: 'rounded'})
+          var word = $("#search").val();
+          axios.post('/home/keyword/',{word:word})
+              .then(function(response){
+                console.log("ALL NEWS BY KEYWORD",response.data.news.articles);
+                app.news = response.data.news.articles;
+              })
+              .catch(function(error){
+                console.log("ERROR",error)
+          });
+        },
+        addFavoriteNews:function(item){
+          console.log("FAVORITE",item);
+        },
+        addFavoriteSource:function(item){
+          console.log("FAVORITE SOURCE",item);
+          
+        }
+      }
     });
 
     

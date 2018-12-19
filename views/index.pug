@@ -11,11 +11,11 @@ block script
     var msg = "";
     if(errores != null){
       if(errores == 101)
-        msg = "Usuario y/o constraseña incorrectos."
+        msg = "User or password are wrong."
       else if(errores == 102)
-        msg = "Cuenta desactivada."
+        msg = "Your count is blocked."
       else if(errores == 103)
-        msg = "Cuenta sin autorización."
+        msg = "Your count is blocked."
       M.toast({
         html: msg,
         classes: 'rounded',
