@@ -1,11 +1,12 @@
 extends layout
+block css
+  link(rel="stylesheet", href="/stylesheets/home.css")  
 
 block content
   include nav.pug
   br
   br
   #app
-
     .row.center
       .container
         nav.white
@@ -19,14 +20,14 @@ block content
     .row.center
       .container
         .col.s12.m3.offset-m2
-          a.btn.blue(v-on:click="loadAll()") WORLD TOPS NEWS
+          a.btn.blue.round(v-on:click="loadAll()") WORLD TOPS NEWS
         .col.s12.m3
-          a.btn.blue(v-on:click="loadAllUsa()") USA TOP NEWS
+          a.btn.blue.round(v-on:click="loadAllUsa()") USA TOP NEWS
         .col.s12.m3
-          a.btn.blue.modal-trigger(href="#modal1") BY SOURCE
+          a.btn.blue.modal-trigger.round(href="#modal1") BY SOURCE
 
     .row.center
-        .col.s12.m3(v-for="item in news")
+        .col.s12.m4.l3(v-for="item in news")
           .card
             .card-image
               img(:src="item.urlToImage" style="height: 165px;")

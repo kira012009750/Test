@@ -1,46 +1,49 @@
 extends layout
-
+block css
+  link(rel="stylesheet", href="/stylesheets/favorite.css")
 block content
   include nav.pug
   br
   br
   #app
     .row
-      .col.s12.m6.center
-        h5 SOURCES
-        .row
-          .col.s12.m6(v-for="item in sources")
-            .card
-              .card-content
-                .row
-                  .col.s1.m1
-                    a.btn-floating.btn-large.waves-effect.waves-light.red(v-on:click="deleteSource(item)")
-                      i.material-icons delete
-                  .col.s10.m10
-                    h5.title(style="font-weight: 800;margin-bottom: 0px;margin-top: 10px;") {{item.name}}
-                    label(style="font-weight: 200;margin-bottom: 0px;margin-top: 0px;") {{item.country | upperCase}} | 
-                    label(style="font-weight: 300;margin-bottom: 0px;margin-top: 0px;") {{item.url}}
-
-
-      .col.s12.m6.center
-        h5 NEWS
-        .row
-          .col.s6(v-for="item in news")
-            .card
-              .card-image(style="max-width: 400px;")
-                img(:src="item.urlToImage",width="400px;")
-              .card-stacked
+      .container
+        .col.s12.center
+          h3 SOURCES
+          .row
+            .col.s12.m6(v-for="item in sources")
+              .card
                 .card-content
-                  p {{item.title}}
-                  label {{item.source.name}}
-                .card-action
                   .row
-                    .col.s12.m4
-                      span.blue-text(v-on:click="share(item)",title="Share on Facebook") SHARE
-                    .col.s12.m4
-                      a.green-text(:href='item.url') LINK
-                    .col.s12.m4
-                      span.red-text(v-on:click="deleteNews(item)") DELETE
+                    .col.s1.m1
+                      a.btn-floating.btn-small.waves-effect.waves-light.red(v-on:click="deleteSource(item)")
+                        i.material-icons delete
+                    .col.s10.m10
+                      h5.title {{item.name}}
+                      label.sub200 {{item.country | upperCase}} | 
+                      label.sub300 {{item.url}}
+
+
+      .col.s12.center
+        h3 NEWS
+        .row
+          .container
+            .col.s12.m6(v-for="item in news")
+              .card
+                .card-image(style="max-width: 100%;")
+                  img.img(:src="item.urlToImage")
+                .card-stacked
+                  .card-content.content
+                    p {{item.title}}
+                    label {{item.source.name}}
+                  .card-action.action
+                    .row
+                      .col.s4
+                        span.blue-text.actionBtn(v-on:click="share(item)",title="Share on Facebook") SHARE
+                      .col.s4
+                        a.green-text.actionBtn(:href='item.url') LINK
+                      .col.s4
+                        span.red-text.actionBtn(v-on:click="deleteNews(item)") DELETE
 
 
 block script

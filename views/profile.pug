@@ -4,51 +4,36 @@ block content
   include nav.pug
   br
   br
+  .row.center
+    .col.s12
+      h3 Brounie
+    .col.s12
+      p We Make Apps
+    .col.s12
+      label This is just a test, this project does not have any value
+    .col.s12
+      label Aldo Rodrigo | 18/Dec/2018
   .row
     .container
-      .col.s12.m4.offset-m4
+      .col.s12.m6.offset-m3
         .card
           .card-image
             -var url = img
             img(src=url, style="height: 365px;")
             span.card-title= name.toUpperCase()
           .card-content(style="height: 100px;")
-            p EMAIL: #{email}
-            p ID-USER: #{id}
+            label EMAIL:
+            strong #{email}
+            br
+            label ID-USER:
+            strong  #{id}
+
 
 
 block script
   script.
     $(document).ready(function(){
-      $('.sidenav').sidenav();
-      loadAutoComplete();
-      
-    });
-
-
-
-    function loadAutoComplete(){
-      var news = !{newsJS};
-      var newsJS = [];
-      console.log(news)
-      news.articles.forEach(function(item){
-         // newsJS[''+item.source.name+''] = item.urlToImage;
-         newsJS.push({
-           text:item.source.name,
-           img:item.urlToImage,
-           url:item.url
-         });
-      });
-      console.log("ITEM",newsJS)
-      $('input.autocomplete').autocomplete({
-         data: newsJS,
-      });
-    }
-
-    $("#autocomplete-input").change(function(){
-        var url = $("#autocomplete-input").data("url");
-        console.log("URL",url)
-        location.href=url;
+      $('.sidenav').sidenav();      
     });
 
     

@@ -1,10 +1,22 @@
 extends layout
-
+block css
+  link(rel="stylesheet", href="/stylesheets/login.css")
 block content
-  .row.center
-    .col.s12.m4.offset-m4
-      h1= title
-      a.btn.blue(onclick="googleAuth()") Login / Sing in with Google
+  .backgound
+    .row.center
+      .col.s12.m4.offset-m4
+        .content
+          .row
+            .col.s12
+              h2 #{title}
+            .col.s12
+              .google(onclick="googleAuth()") Login / Sing in with Google
+            .col.s12
+              p We Make Apps
+            .col.s12
+              label This is just a test, this project does not have any value
+            .col.s12
+              label Aldo Rodrigo | 18/Dec/2018
 block script
   script.
     var errores = $("#error").data( "json" );
