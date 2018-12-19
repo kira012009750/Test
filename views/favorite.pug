@@ -1,0 +1,136 @@
+extends layout
+
+block content
+  include nav.pug
+  br
+  br
+  #app
+    .row
+      .col.s12.m6.center
+        h5 SOURCES
+        .row
+          .col.s12.m6(v-for="item in sources")
+            .card
+              .card-content
+                .row
+                  .col.s1.m1
+                    a.btn-floating.btn-large.waves-effect.waves-light.red(v-on:click="deleteSource(item)")
+                      i.material-icons delete
+                  .col.s10.m10
+                    h5.title(style="font-weight: 800;margin-bottom: 0px;margin-top: 10px;") {{item.name}}
+                    label(style="font-weight: 200;margin-bottom: 0px;margin-top: 0px;") {{item.country | upperCase}} | 
+                    label(style="font-weight: 300;margin-bottom: 0px;margin-top: 0px;") {{item.url}}
+
+
+      .col.s12.m6.center
+        h5 NEWS
+        .row
+          .col.s6(v-for="item in news")
+            .card
+              .card-image(style="max-width: 400px;")
+                img(:src="item.urlToImage",width="400px;")
+              .card-stacked
+                .card-content
+                  p {{item.title}}
+                  label {{item.source.name}}
+                .card-action
+                  .row
+                    .col.s12.m4
+                      span.blue-text(v-on:click="share(item)",title="Share on Facebook") SHARE
+                    .col.s12.m4
+                      a.green-text(:href='item.url') LINK
+                    .col.s12.m4
+                      span.red-text(v-on:click="deleteNews(item)") DELETE
+
+
+block script
+  script.
+      $(document).ready(function(){
+        M.toast({html: 'Wait a minute, loading all information', classes: 'rounded'})
+        app.loadAllSoruces();
+        app.loadAllNews();
+      });
+      var app = new Vue({
+        el: '#app',
+        data: {
+          news:{},
+          sources:{},
+        },
+        filters:{
+          upperCase:function(value){
+            if(value != undefined){
+              return value.toUpperCase();
+            }
+          }
+        },
+        methods:{
+          loadAllSoruces:function(){ // THIS METHOD LOAD ALL FAVORITE SOURCES
+            var user = "#{user}"
+            var allSource = [];
+            var sources = firebase.database().ref('source/' + user);
+                sources.on('value', function(data) {
+                     data.forEach(function(a){
+                        var item = a.val();
+                        var aux = {
+                          key:a.key,
+                          category:item.category,
+                          country:item.country,
+                          description:item.description,
+                          id:item.id,
+                          language:item.language,
+                          name:item.name,
+                          url:item.url,
+                        }
+                        allSource.push(aux);
+                      });
+                      app.sources = allSource;
+                });
+          },
+          loadAllNews:function(){
+              var user = "#{user}"
+              var allNews = [];
+              var news = firebase.database().ref('news/' + user);
+                  news.on('value', function(data) {
+                      data.forEach(function(a){
+                        var item = a.val();
+                        var aux = {
+                          key:a.key,
+                          category:item.category,
+                          country:item.country,
+                          description:item.description,
+                          id:item.id,
+                          language:item.language,
+                          name:item.name,
+                          urlToImage:item.urlToImage,
+                          title:item.title,
+                          url:item.url,
+                          source:item.source,
+                        }
+                        allNews.push(aux);
+                      });
+                      app.news = allNews;
+                  });
+          },
+          deleteSource:function(item){
+            var user = "#{user}"
+            var sources = firebase.database().ref("source/"+user+"/"+item.key);
+                sources.remove();
+            app.loadAllSoruces()
+          },
+          deleteNews:function(item){
+            var user = "#{user}"
+            console.log(item.key);
+            var sources = firebase.database().ref("news/"+user+"/"+item.key);
+                sources.remove();
+              app.loadAllNews()
+          },
+          share:function(item){
+            var url = "https://www.facebook.com/sharer/sharer.php?u="+item.url;
+            console.log(url);
+            location.href = url
+          }
+        }
+      });
+
+
+    

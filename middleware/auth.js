@@ -1,16 +1,7 @@
 // =========== VERIFICAR SI TIENE SESION ABIERTA
-function isUser(req,res,next){
-    var user = req.session.id;
-    if(user){
-          res.redirect('/home');
-    }else{
-        next();
-    }
-}
-
 function isAuth(req,res,next){
-    var user = req.session.id;
-    console.log("ACCOUNT",user)
+    var user = req.session.email;
+    console.log("ACCOUNT USER ID = ",user)
     if(user == null || user == undefined){
         res.redirect('/');
     }else{
@@ -20,6 +11,5 @@ function isAuth(req,res,next){
 
 module.exports = {
     isAuth:isAuth,
-    isUser:isUser, 
 };
 

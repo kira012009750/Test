@@ -26,20 +26,7 @@ block script
     }
     errores = null;
 
-    //- ---------------------- FIREBASE ----------------------
-    //- ---------------------- FIREBASE ----------------------
-    var config = {
-      apiKey: "#{key}",
-      authDomain: "brounietest.firebaseapp.com",
-      databaseURL: "https://brounietest.firebaseio.com",
-      projectId: "brounietest",
-      storageBucket: "brounietest.appspot.com",
-      messagingSenderId: "#{id}"
-    };
-    firebase.initializeApp(config);
-    //- ---------------------- FIREBASE ----------------------
-    //- ---------------------- FIREBASE ----------------------
-
+    
     function googleAuth(){
       var provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider).then(function(result) {

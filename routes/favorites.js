@@ -1,25 +1,22 @@
 var express = require('express');
 var router = express.Router();
+var auth = require("../middleware/auth");
+var news = require("../model/news/backend-news");
 
-/* GET home page.
 
-709306ff869641d2b43ab576041a0baa
-
-*/
 var controller = {
   index:function(req,res,next){
     var context = {
-      img:req.session.img,
       name:req.session.name,
-      email:req.session.email,
-      id:req.session.id,
       key:"AIzaSyD02_KFAgFxo2LKH9eALv3x1cJUTbPs_tI",
       id:"926143549779",
+      user:(req.session.email).split("@")[0],
     }
-    res.render('profile', context);
+    res.render('favorite', context);
   },
+
 }
 
-router.get("/", controller.index); 
+router.get("/",auth.isAuth, controller.index); 
 
 module.exports = router;

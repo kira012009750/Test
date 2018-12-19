@@ -8,7 +8,10 @@ var controller = {
   index:function(req,res,next){
     var context = {
       name:req.session.name,
-      title:"Home"
+      title:"Home",
+      key:"AIzaSyD02_KFAgFxo2LKH9eALv3x1cJUTbPs_tI",
+      id:"926143549779",
+      user:(req.session.email).split("@")[0]
     }
     res.render('home', context);
   },

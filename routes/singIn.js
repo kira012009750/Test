@@ -6,8 +6,8 @@ var controller = {
 
   index:function(req,res,next){
     //SAVE THIS USER IN SESSION STORAGE
-    console.log("USER SAVED =",req.body.user);
-    req.session.id = req.body.id;
+    console.log("USER SAVED =",req.body);
+    req.session.id = req.body.userId;
     req.session.name = req.body.name;
     req.session.email = req.body.email;
     req.session.img = req.body.img;

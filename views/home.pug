@@ -137,10 +137,17 @@ block script
         },
         addFavoriteNews:function(item){
           console.log("FAVORITE",item);
+          var database = firebase.database();
+          var id = "#{user}";
+          firebase.database().ref('news/' + id).push(item);
+          M.toast({html: 'Added to your favorites', classes: 'rounded'})
         },
         addFavoriteSource:function(item){
           console.log("FAVORITE SOURCE",item);
-          
+          var database = firebase.database();
+          var id = "#{user}";
+          firebase.database().ref('source/' + id).push(item);
+          M.toast({html: 'Added to your favorites', classes: 'rounded'})
         }
       }
     });

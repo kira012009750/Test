@@ -16,8 +16,25 @@ html
 
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
   script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
+  script(src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js")
+  script(src="https://www.gstatic.com/firebasejs/5.5.2/firebase-database.js")
   script(src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js")
   script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
   script(src="https://unpkg.com/axios/dist/axios.min.js")
+  script.
+    //- ---------------------- FIREBASE ----------------------
+    //- ---------------------- FIREBASE ----------------------
+    var config = {
+      apiKey: "#{key}",
+      authDomain: "brounietest.firebaseapp.com",
+      databaseURL: "https://brounietest.firebaseio.com",
+      projectId: "brounietest",
+      storageBucket: "brounietest.appspot.com",
+      messagingSenderId: "#{id}"
+    };
+    firebase.initializeApp(config);
+    //- ---------------------- FIREBASE ----------------------
+    //- ---------------------- FIREBASE ----------------------
+
   block script
 
